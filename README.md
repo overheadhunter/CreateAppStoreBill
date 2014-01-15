@@ -1,28 +1,20 @@
-### Generate Bills from Apples Financial Reports
+## Generate Bills from Apples Financial Reports
 Apple generates financial reports in txt format. The German tax office wants to see the bills. This script helps to generate the bills from the financial reports.
 
-### Important Note
-Use this at your own risk. I am not responsible for any lost data on your machine. The script removes temporary files after it ran. Therefore you should create a dictionary for your financial reports and run the script in that directory..
-
-To create the bills for the tax office with this script works for me. Before you submit the bills check with your tax consultant! I am not responsible for any problems you have with your tax office because of this script.
-
-### What you need
+## What you need
 You need pdflatex on your machine. And you should be able to edit LaTeX files because you have to add your address in the head.tex file.
 
-### How it works
-Read the Imortant Note. Read it again!
+## How it works
 
-For every month generate a dictionary. Let's say you want to generate the bills for December 2012. You could do this:
+- Create a directory for each month.
+- Save all financial reports from iTunes Connect to the corrsponding directory.
+- Copy/Paste the exchange rates from "Payments & Financial Reports > Payments" to a file called `factors.txt` in the same directory.
+- Adjust your adress in head.tex using your favourite text editor.
+- Run `summarize.sh -r directoryName`.
 
-```
-$ cd ~/Documents
-$ mkdir financial_reports; cd financial_reports
-$ mkdir 1212; cd 1212
-```
+Done.
 
-Download all financial reports from iTunes Connect for that month into that directory.
-
-Copy and past the exchange rates from "Payments & Financial Reports > Payments" within your iTunes Connect and put it into a file called factors.txt. Put that file into the directory with the reports (1212/ in the example). It should look like this:
+### Example factors.txt
 
 ```
 AUD      0.00    13.97   13.97   0.00    0.00    0.00    13.97   0.77022         10.76  EUR
@@ -42,13 +34,33 @@ USD      0.00    58.10   58.10   0.00    0.00    0.00    58.10   0.74200        
 ZAR      0.00    11.19   11.19   0.00    0.00    0.00    11.19   0.08311         0.93   EUR
 ```
 
-Set your address in head.tex: Open head.tex with your favorite text editor and search for Mustermann. Change the template address. Then do:
-
-```
+### Further script options
+This is the easiest way to use the script. Just specify the financial reports folder:
+``` bash
 $ cd ~/Documents/financial_reports
-$ perl summarize.pl 1212 head.tex tail.tex
+$ bash summarize.sh -r 1212
 ```
 
-Now you should have files called bill_1212.pdf and bill_1212.tex in that directory. 
+Specify output file:
+``` bash
+$ bash summarize.sh -r 1212 -o 2012-12.pdf
+```
 
-Done.
+Specify the name of your exchange rates file (relative to your reports directory specified by -r):
+``` bash
+$ bash summarize.sh -r 1212 -f imfRates.txt
+```
+
+Filter the apps, you want to appear on the bill:
+``` bash
+$ bash summarize.sh -r 1212 --include 123456789,123456790
+$ bash summarize.sh -r 1212 --exclude 123456791,123456792
+```
+
+## Important Note
+Use this at your own risk. I am not responsible for any lost data on your machine. The script removes temporary files after it ran. Therefore you should create a directory for your financial reports and run the script in that directory.
+
+To create the bills for the tax office with this script works for me. Before you submit the bills check with your tax consultant! I am not responsible for any problems you have with your tax office because of this script.
+
+## Credits
+Thanks to [dasdom](dasdom/CreateAppStoreBill) for the original Perl script.
