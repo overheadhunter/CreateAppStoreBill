@@ -9,7 +9,7 @@ fi
 
 
 function usage {
-    echo "usage: summarize.sh -r financialReportsDir [-o output.pdf] [-f financialReportsDir/factors.txt] [-i 123456789,123456790] [-e 123456789,123456790]"
+	echo "usage: summarize.sh -r financialReportsDir [-o output.pdf] [-f financialReportsDir/factors.txt] [-i 123456789,123456790] [-e 123456789,123456790]"
 	echo "-r --reports Path to reports directory, where you downloaded the .txt reports for a certain accounting period."
 	echo "-o --output Path to which the resulting PDF should be saved. Defaults to 'report.pdf' inside of the directory specified in -r."
 	echo "-f --factors Name of the currency exchange factors.txt relative to -r. Defaults to 'factors.txt'"
@@ -53,7 +53,7 @@ function summarize {
 
 while [ "$1" != "" ]; do
     case $1 in
-        -r | --reports )        shift
+        -r | --reports )		shift
 								reportsDir=$1
 								;;
         -o | --output )			shift
@@ -71,7 +71,7 @@ while [ "$1" != "" ]; do
         -h | --help )			usage
 								exit
 								;;
-        * )                     usage
+        * )						usage
 								exit 1
     esac
     shift
