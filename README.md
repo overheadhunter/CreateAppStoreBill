@@ -63,4 +63,4 @@ Use this at your own risk. I am not responsible for any lost data on your machin
 To create the bills for the tax office with this script works for me. Before you submit the bills check with your tax consultant! I am not responsible for any problems you have with your tax office because of this script.
 
 ## Credits
-Thanks to [dasdom](dasdom/CreateAppStoreBill) for the original Perl script.
+Thanks to [dasdom](https://github.com/dasdom/CreateAppStoreBill) for the original Perl script.
