@@ -21,7 +21,9 @@ BEGIN {
 }
 
 END {
+	roundedTotal=sprintf("%.2f", totalTargetCurrency);
+	roundetTax=sprintf("%.2f", totalWithholdingTax);
 	printf "\\hline & & & Gesamt & %.2f EUR & %.2f EUR \\\\ \\hline \n", totalTargetCurrency, totalWithholdingTax;
 	print "\\end{longtable}\n";
-	printf "Zu zahlender Betrag: \\textbf{%.2f EUR}\n\n", totalTargetCurrency-totalWithholdingTax;
+	printf "Zu zahlender Betrag: \\textbf{%.2f EUR}\n\n", roundedTotal-roundetTax;
 }

@@ -1,5 +1,10 @@
 function abs(value) {
-  return (value<0 ? -value : value);
+	return (value<0 ? -value : value);
+}
+
+function parseNum(input) {
+	gsub(",", "", input);
+	return input;
 }
 
 BEGIN {
@@ -9,8 +14,8 @@ BEGIN {
 
 # first file
 (FNR==NR) {
-	exchangeRates[$1]=$9;
-	withholdingTaxes[$1]=abs($5/$4);
+	exchangeRates[$1]=parseNum($9);
+	withholdingTaxes[$1]=abs(parseNum($5)/parseNum($4));
 	targetCurrency=$11;
 }
 
@@ -22,16 +27,16 @@ BEGIN {
 	
 	startDate=$1;
 	endDate=$2;
-	quantity=$6;
-	subtotal=$8;
-	currency=$9;
+	quantity=parseNum($6);
+	subtotal=parseNum($8);
+	currency=parseNum($9);
 	convertedSubtotal=exchangeRates[$9] * $8;
 	
 	criteria=$11 "#" $7;
 	rowIds[criteria]=criteria;
 	appIds[criteria]=$11;
 	appTitles[criteria]=$13;
-	pricePerUnit[criteria]=$7;
+	pricePerUnit[criteria]=parseNum($7);
 	sumQuantity[criteria]+=quantity;
 	sumTotal[criteria]+=subtotal;
 	sumConvertedTotal[criteria]+=convertedSubtotal;
