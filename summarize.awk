@@ -1,3 +1,7 @@
+function abs(value) {
+  return (value<0 ? -value : value);
+}
+
 BEGIN {
 	FS="\t";
 	wellFormatted=0;
@@ -6,6 +10,7 @@ BEGIN {
 # first file
 (FNR==NR) {
 	exchangeRates[$1]=$9;
+	withholdingTaxes[$1]=abs($5/$4);
 	targetCurrency=$11;
 }
 
@@ -30,13 +35,14 @@ BEGIN {
 	sumQuantity[criteria]+=quantity;
 	sumTotal[criteria]+=subtotal;
 	sumConvertedTotal[criteria]+=convertedSubtotal;
+	sumWithholdingTaxes[criteria]=withholdingTaxes[$9] * sumConvertedTotal[criteria];
 }
 
 END {
-	#Start Date; End Date; ID; App Title; Quantity; Local Currency; Price; Total; Target Currency; Total (Target Currency)
+	#Start Date; End Date; ID; App Title; Quantity; Local Currency; Price; Total; Target Currency; Total (Target Currency); Withholding Taxes (Target Currency)
 	if (wellFormatted == 1) {
 		for (criteria in rowIds) {
-			printf "%s;%s;%s;%s;%i;%s;%.2f;%.2f;%s;%.2f\n", startDate, endDate, appIds[criteria], appTitles[criteria], sumQuantity[criteria], currency, pricePerUnit[criteria], sumTotal[criteria], targetCurrency, sumConvertedTotal[criteria];
+			printf "%s;%s;%s;%s;%i;%s;%.7f;%.7f;%s;%.7f;%.7f\n", startDate, endDate, appIds[criteria], appTitles[criteria], sumQuantity[criteria], currency, pricePerUnit[criteria], sumTotal[criteria], targetCurrency, sumConvertedTotal[criteria], sumWithholdingTaxes[criteria];
 		}
 	}
 }
