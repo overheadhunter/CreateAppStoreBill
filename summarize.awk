@@ -25,8 +25,11 @@ BEGIN {
 (FNR!=NR && FNR>1 && NF==22 && $7>0) {
 	wellFormatted=1;
 	
-	startDate=$1;
-	endDate=$2;
+	# we want ISO 8601
+	split($1, startDateComps, "/");
+	split($2, endDateComps, "/");
+	startDate=sprintf("%s-%02s-%02s", startDateComps[3], startDateComps[1], startDateComps[2]);
+	endDate=sprintf("%s-%02s-%02s", endDateComps[3], endDateComps[1], endDateComps[2]);
 	quantity=parseNum($6);
 	subtotal=parseNum($8);
 	currency=parseNum($9);

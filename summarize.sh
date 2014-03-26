@@ -32,7 +32,9 @@ function summarize {
 		LC_NUMERIC="C" awk -f summarize.awk "$factorsFile" "$reportsDir/$report" >> "$tmpDir/summary.csv"
 	done
 	LC_NUMERIC="C" awk -f filter.awk -v include=$include -v exclude=$exclude "$tmpDir/summary.csv" > "$tmpDir/filtered.csv"
-	LC_NUMERIC="C" awk -f csvToLatex.awk "$tmpDir/filtered.csv" > "$tmpDir/table.tex"
+	firstStartDate=`sort --numeric-sort --field-separator=';' --key=1 "$tmpDir/filtered.csv" | head -2 | tail -1 | awk -F ';' '{print $1}'`
+	lastEndDate=`sort --numeric-sort --field-separator=';' --key=1 "$tmpDir/filtered.csv" | tail -1 | awk -F ';' '{print $2}'`
+	LC_NUMERIC="C" awk -f csvToLatex.awk -v periodStart=$firstStartDate -v periodEnd=$lastEndDate "$tmpDir/filtered.csv" > "$tmpDir/table.tex"
 	
 	# LaTeX Power
 	cat "head.tex" > "$tmpDir/result.tex"

@@ -7,9 +7,7 @@ BEGIN {
 }
 
 (FNR==2) {
-	split($1, start, "/");
-	split($2, end, "/");
-	printf "Rechnungszeitraum: %s-%02s-%02s - %s-%02s-%02s \\\\\n", start[3], start[2], start[1], end[3], end[2], end[1];
+	printf "Rechnungszeitraum: %s - %s \\\\\n", periodStart, periodEnd;
 	print "\n\\begin{longtable}{|c|r|r|r|r|r|} \\hline";
 	printf "Produkt ID & Preis & Stückzahl & Gesamtpreis & Gesamtpreis & Enthaltene Quellensteuer \\\\ \\hline \\hline\n";
 }
