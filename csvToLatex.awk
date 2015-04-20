@@ -19,13 +19,13 @@ BEGIN {
 }
 
 END {
-	roundedTotal=sprintf("%.2f", totalTargetCurrency);
-	roundedTax=sprintf("%.2f", totalWithholdingTax);
 	if (length(adRevenueTargetCurrency) != 0) {
 		printf "Ad Revenue & & & %.2f USD & %.2f EUR & %.2f EUR \\\\ \\hline \n", adRevenueUsd, adRevenueTargetCurrency, adRevenueWithholdingTaxTargetCurrency;
 		totalTargetCurrency += adRevenueTargetCurrency;
 		totalWithholdingTax += adRevenueWithholdingTaxTargetCurrency;
 	}
+	roundedTotal=sprintf("%.2f", totalTargetCurrency);
+	roundedTax=sprintf("%.2f", totalWithholdingTax);
 	printf "\\hline & & & Gesamt & %.2f EUR & %.2f EUR \\\\ \\hline \n", totalTargetCurrency, totalWithholdingTax;
 	print "\\end{longtable}";
 	print "\n\n";
