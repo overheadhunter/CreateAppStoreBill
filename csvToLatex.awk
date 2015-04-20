@@ -20,8 +20,14 @@ BEGIN {
 
 END {
 	roundedTotal=sprintf("%.2f", totalTargetCurrency);
-	roundetTax=sprintf("%.2f", totalWithholdingTax);
+	roundedTax=sprintf("%.2f", totalWithholdingTax);
+	if (length(adRevenueTargetCurrency) != 0) {
+		printf "Ad Revenue & & & %.2f USD & %.2f EUR & %.2f EUR \\\\ \\hline \n", adRevenueUsd, adRevenueTargetCurrency, adRevenueWithholdingTaxTargetCurrency;
+		totalTargetCurrency += adRevenueTargetCurrency;
+		totalWithholdingTax += adRevenueWithholdingTaxTargetCurrency;
+	}
 	printf "\\hline & & & Gesamt & %.2f EUR & %.2f EUR \\\\ \\hline \n", totalTargetCurrency, totalWithholdingTax;
-	print "\\end{longtable}\n";
-	printf "Zu zahlender Betrag: \\textbf{%.2f EUR}\n\n", roundedTotal-roundetTax;
+	print "\\end{longtable}";
+	print "\n\n";
+	printf "\\raggedleft \\textbf{Zu zahlender Betrag %.2f EUR}\n\n", roundedTotal-roundedTax;
 }
