@@ -6,12 +6,10 @@ function unquote(input) {
 BEGIN {
 	FS=",";
   sum = 0;
-  targetCurrency = "";
 }
 
 # first line
-match($0, /iTunes Connect - Payments and Financial Reports/){
-
+(NR == 1) {
   strContainingPeriod = unquote($0);
   periodParanthesisOpen = index(strContainingPeriod, "(");
   periodParanthesisClose = index(strContainingPeriod, ")");
@@ -21,12 +19,28 @@ match($0, /iTunes Connect - Payments and Financial Reports/){
   printf "Region oder Typ & Stückzahl & Gesamtpreis & Quellensteuern und Abgaben & Gesamtpreis \\\\ \\hline \\hline\n";
 }
 
-match($3, /\"[0-9]*\.[0-9]+\"/) {
-  regionOrType = unquote($1);
-  localCurrency = substr(regionOrType, index(regionOrType, "(") + 1, 3);
-  targetCurrency = unquote($11);
-  printf "%s & %i & %.2f %s & %.2f %s & %.2f %s \\\\ \\hline \n", regionOrType, unquote($2), unquote($4), localCurrency, unquote($5) + unquote($6) + unquote($7), localCurrency, unquote($10), targetCurrency;
-  sum += unquote($10);
+# column labels
+(NR == 3) {
+	for (i = 1; i <= NF; i++) {
+		col[$i] = i;
+	}
+}
+
+(NR > 3) {
+	unitsSold = unquote($col["Units Sold"]);
+	if (length(unitsSold) > 0 && (unitsSold > 0 || unitsSold == "-")) {
+	  regionOrType = unquote($col["Region (Currency)"]);
+	  localCurrency = substr(regionOrType, index(regionOrType, "(") + 1, 3);
+		earned = unquote($col["Earned"]);
+		inputTax = unquote($col["Input Tax"]);
+		adjustments = unquote($col["Adjustments"]);
+		withholdingTax = unquote($col["Withholding Tax"]);
+		taxTotal = inputTax + adjustments + withholdingTax;
+		proceeds = unquote($col["Proceeds"]);
+		targetCurrency = unquote($col["Bank Account Currency"]);
+	  printf "%s & %s & %.2f %s & %.2f %s & %.2f %s \\\\ \\hline \n", regionOrType, unitsSold, earned, localCurrency, taxTotal, localCurrency, proceeds, targetCurrency;
+	  sum += proceeds;
+	}
 }
 
 END {
