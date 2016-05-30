@@ -28,7 +28,7 @@ BEGIN {
 
 (NR > 3) {
 	unitsSold = unquote($col["Units Sold"]);
-	if (length(unitsSold) > 0 && (unitsSold > 0 || unitsSold == "-")) {
+	if (length(unitsSold) > 0) {
 	  regionOrType = unquote($col["Region (Currency)"]);
 	  localCurrency = substr(regionOrType, index(regionOrType, "(") + 1, 3);
 		earned = unquote($col["Earned"]);
