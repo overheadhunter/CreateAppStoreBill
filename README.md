@@ -14,7 +14,7 @@ You need pdflatex on your machine. And you should be able to edit LaTeX files be
 
 Done.
 
-### Example factors.txt
+### Example financial_report.csv
 
 ```
 "iTunes Connect - Payments and Financial Reports	(July, 2015)",,,,,,,,,,,,
@@ -34,18 +34,6 @@ Americas (USD),"20","25.20","25.20","0","0","0","25.20","0.88452","22.29","EUR",
 ,,,,,,,,,,,,
 ,,,,,,,,,,,,
 
-```
-
-### Further script options
-This is the easiest way to use the script. Just point it to the `financial_report.csv`:
-``` bash
-$ cd ~/Documents/financial_reports
-$ bash summarize.sh -r 2015-10/financial_report.csv
-```
-
-Specify output file:
-``` bash
-$ bash summarize.sh -r 2015-10/financial_report.csv -o 2015-10.pdf
 ```
 
 ## Important Note
